@@ -1,0 +1,41 @@
+.ctatrain .row {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.ctatrain .name {
+  text-align: center;
+  border-radius: 5px;
+  width: 143px;
+  float: left;
+  padding: 5px 15px;
+}
+.ctatrain .arrival {
+  width: 60%;
+  float: left;
+  padding: 5px 0 0 10px;
+}
+.ctatrain .Brn-line {
+  background-color: #62361b;
+}
+.ctatrain .Red-line {
+  background-color: #c60c30;
+}
+.ctatrain .P-line {
+  background-color: #522398;
+}
+.ctatrain .G-line {
+  background-color: #009b3a;
+}
+.ctatrain .Org-line {
+  background-color: #f9461c;
+}
+.ctatrain .Pink-line {
+  background-color: #e27ea6;
+}
+.ctatrain .Y-line {
+  background-color: #f9e300;
+}
+.ctatrain .Blue-line {
+  background-color: #00a1de;
+}

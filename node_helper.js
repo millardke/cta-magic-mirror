@@ -43,7 +43,7 @@ module.exports = NodeHelper.create({
                     var parse = JSON.parse(body);
                     
                     if(typeof parse.ctatt !== undefined) {
-                        var alteredData = this.handleData(parse.ctatt.eta);
+                        var alteredData = this.handleData(parse.ctatt.eta, data);
                         data = _.union(data, alteredData);
                         this.sendData(data);
                     } else {
@@ -56,7 +56,8 @@ module.exports = NodeHelper.create({
         }
     },
 
-    handleData: function(data) {
+    handleData: function(data, totalData) {
+        console.log('data', data);
         var arrivals = [];
 
         if(data) {
@@ -65,8 +66,10 @@ module.exports = NodeHelper.create({
 
                 var diff = moment.duration(moment().diff(arrival.arrT));
                 var minutes = Math.ceil(diff.asMinutes()) * -1;
+
+                var shouldPush = this.shouldPushMore(minutes, data, totalData);
                 
-                if(minutes >= 5) {
+                if(shouldPush) {
                     arrivals.push({
                         rt: arrival.rt,
                         staNm: arrival.staNm,
@@ -78,6 +81,25 @@ module.exports = NodeHelper.create({
         }
 
         return arrivals;
+    },
+
+    shouldPushMore: function(minutes, currentData, totalData) {
+        var minuteCheck = true;
+        if(this.config.minuteDelay) {
+            minuteCheck = minutes >= this.config.minuteDelay;
+        }
+
+        var maxPerStopCheck = true;
+        if(this.config.maxPerStop) {
+            maxPerStopCheck = currentData.length <= this.config.maxPerStop;
+        }
+
+        var totalMaxCheck = true;
+        if(this.config.max) {
+            totalMaxCheck = totalData.length < this.config.max;
+        }
+
+        return minuteCheck && maxPerStopCheck && totalMaxCheck;
     },
 
     sendData: function(data) {
